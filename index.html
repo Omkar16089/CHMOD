@@ -9,16 +9,8 @@
     @keyframes fadeIn { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
   </style>
 </head>
-<body class="bg-gray-900 text-white"><!-- Sidebar --><div class="flex min-h-screen">
-  <aside class="w-64 bg-gray-800 p-5 hidden md:block">
-    <h2 class="text-2xl font-bold mb-6">CHMOD Tool</h2>
-    <ul class="space-y-4 text-gray-300">
-      <li class="hover:text-white cursor-pointer">Dashboard</li>
-      <li class="hover:text-white cursor-pointer">Calculator</li>
-      <li class="hover:text-white cursor-pointer">Examples</li>
-      <li class="hover:text-white cursor-pointer">Docs</li>
-    </ul>
-  </aside>  <!-- Main -->  <main class="flex-1 p-6 fade-in"><!-- Header -->
+<body class="bg-gray-900 text-white"><!-- Sidebar --><div class="min-h-screen">
+  <main class="p-6 fade-in"><!-- Header -->
 <div class="flex justify-between items-center mb-6">
   <h1 class="text-3xl font-bold">CHMOD Permission Tool</h1>
   <input id="filename" placeholder="Enter filename" class="px-3 py-2 rounded bg-gray-800 border border-gray-700" />
@@ -115,8 +107,9 @@ function copyCmd() {
   msg.classList.remove('hidden');
   setTimeout(() => msg.classList.add('hidden'), 1500);
 }
+</script><!-- Footer --><footer class="text-center text-gray-400 py-6 mt-10 border-t border-gray-700">
+  © <span id="year"></span> Omkar Deshmukh. 2026 All rights reserved.
+</footer><script>
+  document.getElementById("year").innerText = new Date().getFullYear();
 </script></body>
-  <footer style="text-align:center; padding:15px; margin-top:30px; background:#111; color:#aaa;">
-  © 2026 Omkar Deshmukh. All Rights Reserved.
-  </footer>
 </html>
