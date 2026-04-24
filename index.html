@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHMOD Learning Tool</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-black text-white min-h-screen flex items-center justify-center">
+
+  <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-3xl">
+    <h1 class="text-3xl font-bold text-center mb-2">CHMOD Calculator</h1>
+    <p class="text-center text-gray-400 mb-6">Learn Linux File Permissions Interactively</p>
+
+    <div class="grid grid-cols-3 gap-6 text-center">
+      <div>
+        <h2 class="font-semibold mb-2">Owner</h2>
+        <label><input type="checkbox" name="owner" value="4"> Read (4)</label><br>
+        <label><input type="checkbox" name="owner" value="2"> Write (2)</label><br>
+        <label><input type="checkbox" name="owner" value="1"> Execute (1)</label>
+      </div>
+      <div>
+        <h2 class="font-semibold mb-2">Group</h2>
+        <label><input type="checkbox" name="group" value="4"> Read (4)</label><br>
+        <label><input type="checkbox" name="group" value="2"> Write (2)</label><br>
+        <label><input type="checkbox" name="group" value="1"> Execute (1)</label>
+      </div>
+      <div>
+        <h2 class="font-semibold mb-2">Others</h2>
+        <label><input type="checkbox" name="others" value="4"> Read (4)</label><br>
+        <label><input type="checkbox" name="others" value="2"> Write (2)</label><br>
+        <label><input type="checkbox" name="others" value="1"> Execute (1)</label>
+      </div>
+    </div>
+
+    <button onclick="calculate()" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 transition duration-300 py-2 rounded-xl">
+      Calculate Permissions
+    </button>
+
+    <div class="mt-6 text-center">
+      <p class="text-xl">Numeric: <span id="numeric" class="font-bold text-green-400">---</span></p>
+      <p class="text-xl">Symbolic: <span id="symbolic" class="font-bold text-yellow-400">---</span></p>
+      <p class="text-lg mt-2">Command:</p>
+      <p id="command" class="bg-black p-2 rounded mt-1">chmod --- file</p>
+    </div>
+
+    <div class="mt-6 bg-gray-700 p-4 rounded-xl">
+      <h3 class="font-semibold mb-2">Explanation</h3>
+      <p id="explanation" class="text-gray-300">Select permissions to see explanation.</p>
+    </div>
+
+  </div>
+
+<script>
+function getValue(name) {
+  let boxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+  let sum = 0;
+  boxes.forEach(b => sum += parseInt(b.value));
+  return sum;
+}
+
+function toSymbolic(val) {
+  return [
+    (val & 4) ? 'r' : '-',
+    (val & 2) ? 'w' : '-',
+    (val & 1) ? 'x' : '-'
+  ].join('');
+}
+
+function explain(val, role) {
+  let perms = [];
+  if (val & 4) perms.push('read');
+  if (val & 2) perms.push('write');
+  if (val & 1) perms.push('execute');
+  if (perms.length === 0) return `${role} has no permissions`;
+  return `${role} can ${perms.join(', ')}`;
+}
+
+function calculate() {
+  let o = getValue('owner');
+  let g = getValue('group');
+  let ot = getValue('others');
+
+  let numeric = `${o}${g}${ot}`;
+  let symbolic = `${toSymbolic(o)}${toSymbolic(g)}${toSymbolic(ot)}`;
+
+  document.getElementById('numeric').innerText = numeric;
+  document.getElementById('symbolic').innerText = symbolic;
+  document.getElementById('command').innerText = `chmod ${numeric} file`;
+
+  let explanation = `\nOwner: ${explain(o, 'Owner')}\nGroup: ${explain(g, 'Group')}\nOthers: ${explain(ot, 'Others')}`;
+  document.getElementById('explanation').innerText = explanation;
+}
+</script>
+
+</body>
+</html>
